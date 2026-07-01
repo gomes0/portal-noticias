@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Noticia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class NoticiaController extends Controller
 {
@@ -12,7 +14,9 @@ class NoticiaController extends Controller
      */
     public function index()
     {
-        return view('admin.noticias.index');
+        $noticias = Noticia::all();
+        return view('admin.noticias.index', ['noticias'=> $noticias
+        ]);
     }
 
     /**
@@ -60,6 +64,8 @@ class NoticiaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $noticias = Noticia::findOrFail($id);
+        $noticias->delete();
+        return redirect()-> route('admin.noticias.index');
     }
 }
